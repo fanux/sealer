@@ -1,20 +1,22 @@
-name: Reply dev-quickstart label
+name: Invite user to join our group
 on:
-  issues:
+  issue_comment:
     types:
-      - labeled
+      - created
 jobs:
-  add-comment:
-    if: github.event.label.name == 'dev-quickstart'
+  issue_comment:
+    name: Invite user to join our group
+    if: ${{ github.event.comment.body == '/invite' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
     steps:
-      - name: Reply dev-quickstart label
+      - name: Invite user to join our group
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            If you want to develop this feature, please reply to this issue first and we will assign the task to you.
-
-            [contributing guide](https://github.com/alibaba/sealer/blob/main/CONTRIBUTING.md)
+            It's my pleasure to invite you to join us :
+            Sealer dingtalk group : 34619594
+            Mail list : sealer@list.alibaba-inc.com
+            Developer please add my dingtalk or wechat : fangnux
