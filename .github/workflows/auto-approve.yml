@@ -1,0 +1,30 @@
+name: Auto approve and merge
+on:
+  issue_comment:
+    types:
+      - created
+jobs:
+  approve:
+    name: auto approve using /LGTM
+    if: ${{ github.event.comment.body == '/LGTM' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Approve Pull Request
+        uses: juliangruber/approve-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: 1
+
+  automerge:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.comment.body == '/merge' }}
+    steps:
+      - name: auto merge using /merge
+        uses: "pascalgn/automerge-action@v0.14.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_METHOD: "squash"
+    permissions:
+      issues: write
