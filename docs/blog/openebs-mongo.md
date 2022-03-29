@@ -3,7 +3,9 @@
 This is a CloudImage.
 
 ```
-sealos run fanux/openebs:latest
+sealos run \
+   -e openebs-basedir=/data -e mongo-replicaCount=3 \
+   fanux/kubernetes:v1.23.5 fanux/openebs:latest fanux/mongo:latest
 ```
 
 # Config storage Dir
