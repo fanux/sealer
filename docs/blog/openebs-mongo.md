@@ -330,3 +330,96 @@ admin   0.000GB
 config  0.000GB
 local   0.000GB
 ```
+
+# Minio on openebs
+
+## Install minio plugin
+
+```shell script
+wget https://github.com/minio/operator/releases/download/v4.4.4/kubectl-minio_4.4.4_linux_amd64 -O kubectl-minio
+chmod +x kubectl-minio
+mv kubectl-minio /usr/local/bin/
+```
+
+```shell script
+kubectl minio version
+```
+
+## Install minio operator
+
+```shell script
+kubectl minio init
+```
+```shell script
+kubectl get all --namespace minio-operator
+```
+
+## Create minio Cluster
+
+You can using Console to create a cluster:
+```shell script
+kubectl minio proxy
+```
+
+Or using helm chart:
+```shell script
+# clone slow you can use proxy: git clone https://ghproxy.com/https://github.com/minio/operator/
+git clone https://github.com/minio/operator
+cd helm/tenant
+```
+
+Change values.pools.servers[].storageClassName = 'local-hostpath'
+
+Then install the cluster:
+```shell script
+helm install my-minio .
+[root@iZ2ze0qiwmjj4p5rncuhhrZ tenant]# kubectl get all -n test
+NAME                  READY   STATUS    RESTARTS   AGE
+pod/minio1-pool-0-0   1/1     Running   0          2m23s
+pod/minio1-pool-0-1   1/1     Running   0          2m23s
+pod/minio1-pool-0-2   1/1     Running   0          2m23s
+pod/minio1-pool-0-3   1/1     Running   0          2m23s
+
+NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/minio            ClusterIP   10.99.196.151   <none>        443/TCP    2m23s
+service/minio1-console   ClusterIP   10.105.201.40   <none>        9443/TCP   2m23s
+service/minio1-hl        ClusterIP   None            <none>        9000/TCP   2m23s
+
+NAME                             READY   AGE
+statefulset.apps/minio1-pool-0   4/4     2m23s
+```
+
+## Trouble shooting
+
+1. DNS can't resolved
+```
+[root@iZ2ze0qiwmjj4p5rncuhhnZ minio]# kubectl logs sealos-log-search-api-cb966fc87-5kmw9
+2022/03/30 10:41:52 Error connecting to db: dial tcp: lookup sealos-log-hl-svc.default.svc.cluster.local on 10.96.0.10:53: no such host
+```
+
+Caused by dns error, make sure you cluster DNS is worked.
+
+Edit you all host resolv.conf to:
+```shell script
+[root@iZ2ze0qiwmjj4p5rncuhhnZ ~]# cat /etc/resolv.conf 
+nameserver 100.100.2.136
+nameserver 100.100.2.138
+```
+
+Then restart coreDNS
+
+2. minio log pod can't start
+```shell script
+  Warning  FailedScheduling  4m29s  default-scheduler  0/6 nodes are available: 6 pod has unbound immediate PersistentVolumeClaims.
+```
+
+This caused by log statefulset using the default storageClass, not the storageClass your specified when create tenants.
+
+You need to set the default storage class:
+```shell script
+kubectl patch storageclass local-hostpath -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+[root@iZ2ze0qiwmjj4p5rncuhhnZ ~]# kubectl get sc
+NAME                       PROVISIONER        RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+local-hostpath (default)   openebs.io/local   Delete          WaitForFirstConsumer   false                  2d1h
+minio-local-storage        openebs.io/local   Delete          WaitForFirstConsumer   false                  3h20m
+```
