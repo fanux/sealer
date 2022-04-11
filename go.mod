@@ -7,6 +7,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.985
 	github.com/cavaliergopher/grab/v3 v3.0.1
+	github.com/containers/storage v1.39.0
 	github.com/distribution/distribution/v3 v3.0.0-20211125133600-cc4627fc6e5f
 	github.com/docker/cli v20.10.7+incompatible
 	github.com/docker/distribution v2.7.1+incompatible
@@ -31,7 +32,7 @@ require (
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.0
 	github.com/tonistiigi/fsutil v0.0.0-20211208191308-f95797418e48
-	github.com/vbatts/tar-split v0.11.1
+	github.com/vbatts/tar-split v0.11.2
 	github.com/vishvananda/netlink v1.1.1-0.20201029203352-d40f9887b852
 	github.com/vishvananda/netns v0.0.0-20211101163701-50045581ed74 // indirect
 	github.com/wonderivan/logger v1.0.0
@@ -39,7 +40,7 @@ require (
 	go.etcd.io/etcd/client/v3 v3.5.0
 	go.uber.org/zap v1.17.0
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
-	golang.org/x/net v0.0.0-20210510120150-4163338589ed
+	golang.org/x/net v0.0.0-20210825183410-e898025ed96a
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9
 	gopkg.in/yaml.v2 v2.4.0
