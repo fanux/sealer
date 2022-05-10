@@ -35,3 +35,23 @@
 ### 加速方案
 
 在此方案基础上就可以直接制作containerd+nydus的runtime镜像，直接使用nydus的能力，同时提升集群镜像与容器镜像的分发速度
+
+----
+
+## 问题
+
+1. registry启动必须依赖containerd等，而这些信息又在CloudImage中
+
+## 流程改进
+
+1. Save时registry数据与CloudImage分开
+2. Load时可以Load CloudImage镜像，这样就知道如何启动container runtime, 这样就可以启动registry
+3. CloudImage不包含registry的数据，这样用ssh分发也会很快
+4. 当然在Save的时候也可以在registry中Save一份CloudImage, 数据有少量重复，这样运行时可以通过registry分发CloudImage
+
+Save 后的目录：
+
+```shell script
+/registry
+kubernetes:v1.19.8.tar // 不再包含registry目录
+```
