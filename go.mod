@@ -23,8 +23,8 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/viper v1.7.0
 	github.com/vbauerster/mpb/v6 v6.0.3
-	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
-	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	golang.org/x/net v0.7.0 // indirect
 	k8s.io/api v0.20.4
 	k8s.io/apimachinery v0.20.4
 	k8s.io/client-go v0.20.4
