@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.61.985
 	github.com/docker/cli v20.10.6+incompatible
-	github.com/docker/distribution v2.7.1+incompatible
+	github.com/docker/distribution v2.8.2+incompatible
 	github.com/docker/docker v20.10.6+incompatible
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/genuinetools/reg v0.16.1
